@@ -222,11 +222,13 @@ const showProducts = (products) => {
       <div>
     <img class="product-image" src=${image}></img>
       </div>
-      <h3>${product.title}</h3>
+      <h5>${product.title}</h5>
       <p>Category: ${product.category}</p>
-      <h2>Price: $ ${product.price}</h2>
-      <button onclick="addToCart(${product.id},${product.price})" id="addToCart-btn" class="buy-now btn btn-success">add to cart</button>
-      <button id="details-btn" class="btn btn-danger">Details</button></div>
+      <h4>Price: $ ${product.price}</h4>
+      <h5 class="text-danger">Ratings: ${product.rating.rate} </h5> 
+      <h6 class="text-secondary">out of ${product.rating.count} reviews</h6>
+      <button onclick="addToCart(${product.id},${product.price})" id="addToCart-btn" class="buy-now btn btn-secondary">add to cart</button>
+      <button id="details-btn" class="btn btn-warning" onclick="loadDetails(${product.id})">Details</button></div>
       `;
     document.getElementById("all-products").appendChild(div);
   }
@@ -240,6 +242,45 @@ const addToCart = (id, price) => {
   updateTotal();
 };
 
+const loadDetails = (id) => {
+  const url = `https://fakestoreapi.com/products/${id}`;
+  fetch(url)
+    .then((res) => res.json())
+    .then((data) => showDetails(data));
+};
+const showDetails = (product) => {
+  const productDetails = document.getElementById("product-details");
+   productDetails.textContent = '';
+  const div = document.createElement("div");
+  div.innerHTML = `
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Product Details</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+      <img src="${product.image}" class="card-img-top rounded mx-auto d-block"  style="width: 200px" alt="...">
+      <h5><span class="text-secondary">Product Name: </span>${product.title}</h5>
+      <h4><span class="text-secondary">Price: </span>${product.price}$</h4>
+      <h5><span class="text-secondary">Category: </span>${product.category}</h5>
+      <p><span class="text-secondary">Details: </span> ${product.description}</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button onclick="addToCart(${product.id},${product.price})" id="addToCart-btn" class="buy-now btn btn-success">add to cart</button>
+      </div>
+    </div>
+  </div>
+</div>
+  `
+  productDetails.appendChild(div);
+  const myModal = new bootstrap.Modal(document.getElementById('exampleModal'), {
+    keyboard: false
+  })
+  myModal.toggle()
+};
 const getInputValue = (id) => {
   const element = document.getElementById(id).innerText;
   const converted = parseFloat(element);
@@ -282,6 +323,7 @@ const updateTotal = () => {
     getInputValue("price") +
     getInputValue("delivery-charge") +
     getInputValue("total-tax");
-  document.getElementById("total").innerText = parseFloat(grandTotal).toFixed(2);
+  document.getElementById("total").innerText =
+    parseFloat(grandTotal).toFixed(2);
 };
 loadProducts();
