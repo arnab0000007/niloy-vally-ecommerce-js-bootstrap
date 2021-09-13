@@ -2,7 +2,7 @@ body {
   overflow-x: hidden;
   font-family: "Montserrat", sans-serif;
 }
-
+/* all products css */
 #all-products {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -19,12 +19,13 @@ body {
 .single-product:hover {
   box-shadow: 4px 4px 7px 2px gray;
   border-radius: 10px;
-  background-color: rgba(231, 226, 173, 0.575);
+  background-color: rgba(97, 97, 97, 0.048);
 }
 .product-image {
   width: 150px;
   height: 150px;
 }
+/* cart css */
 .cart {
   width: 350px;
   padding: 10px;
