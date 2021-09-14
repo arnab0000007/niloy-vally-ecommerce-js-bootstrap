@@ -215,21 +215,24 @@ const showProducts = (products) => {
   const allProducts = products.map((pd) => pd);
   console.log(allProducts);
   for (const product of allProducts) {
-    const image = product.image;
     const div = document.createElement("div");
-    div.classList.add("product");
-    div.innerHTML = `<div class="single-product">
-      <div>
-    <img class="product-image" src=${image}></img>
+    div.classList.add("col");
+    div.innerHTML = `
+    <div class="card h-100 pt-3 single-product ">
+      <img src=${product.image} class="product-image rounded mx-auto d-block" alt="product-image">
+      <div class="card-body">
+        <h5 class="card-title">${product.title}</h5>
+        <p class="card-text"> ${product.category}</p>
+        <h5 class="text-danger">Ratings: ${product.rating.rate} </h5> 
+        <h6 class="text-secondary">out of ${product.rating.count} reviews</h6>
+        <h4>Price: $ ${product.price}</h4>
       </div>
-      <h5>${product.title}</h5>
-      <p>Category: ${product.category}</p>
-      <h4>Price: $ ${product.price}</h4>
-      <h5 class="text-danger">Ratings: ${product.rating.rate} </h5> 
-      <h6 class="text-secondary">out of ${product.rating.count} reviews</h6>
-      <button onclick="addToCart(${product.id},${product.price})" id="addToCart-btn" class="buy-now btn btn-secondary">add to cart</button>
-      <button id="details-btn" class="btn btn-warning" onclick="loadDetails(${product.id})">Details</button></div>
-      `;
+      <div class="card-footer d-flex justify-content-between">
+      <button onclick="addToCart(${product.id},${product.price})" id="addToCart-btn" class="buy-now btn niloy-primary-bg">add to cart</button>
+      <button id="details-btn" class="btn niloy-secondary-bg" onclick="loadDetails(${product.id})">Details</button></div>
+      </div>
+    </div>`;
+
     document.getElementById("all-products").appendChild(div);
   }
 };
@@ -250,36 +253,36 @@ const loadDetails = (id) => {
 };
 const showDetails = (product) => {
   const productDetails = document.getElementById("product-details");
-   productDetails.textContent = '';
+  productDetails.textContent = "";
   const div = document.createElement("div");
   div.innerHTML = `
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Product Details</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-      <img src="${product.image}" class="card-img-top rounded mx-auto d-block"  style="width: 200px" alt="...">
-      <h5><span class="text-secondary">Product Name: </span>${product.title}</h5>
-      <h4><span class="text-secondary">Price: </span>${product.price}$</h4>
-      <h5><span class="text-secondary">Category: </span>${product.category}</h5>
-      <p><span class="text-secondary">Details: </span> ${product.description}</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button onclick="addToCart(${product.id},${product.price})" id="addToCart-btn" class="buy-now btn btn-success">add to cart</button>
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Product Details</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+        <img src="${product.image}" class="card-img-top rounded mx-auto d-block"  style="width: 200px" alt="...">
+        <h5><span class="text-secondary">Product Name: </span>${product.title}</h5>
+        <h4><span class="text-secondary">Price: </span>${product.price}$</h4>
+        <h5><span class="text-secondary">Category: </span>${product.category}</h5>
+        <p><span class="text-secondary">Details: </span> ${product.description}</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn niloy-primary-bg" data-bs-dismiss="modal">Close</button>
+          <button onclick="addToCart(${product.id},${product.price})" id="addToCart-btn" class="buy-now btn niloy-secondary-bg">add to cart</button>
+        </div>
       </div>
     </div>
   </div>
-</div>
-  `
+    `;
   productDetails.appendChild(div);
-  const myModal = new bootstrap.Modal(document.getElementById('exampleModal'), {
-    keyboard: false
-  })
-  myModal.toggle()
+  const myModal = new bootstrap.Modal(document.getElementById("exampleModal"), {
+    keyboard: false,
+  });
+  myModal.toggle();
 };
 const getInputValue = (id) => {
   const element = document.getElementById(id).innerText;
